@@ -49,7 +49,7 @@ const LoginModal = ({ showLoginModal, closeLoginModal }) => {
     e.preventDefault();
     setLoginLoading(true);
     sendSignInLinkToEmail(auth, email, {
-      url: 'http://localhost:3000/',
+      url: 'https://docbookpro.netlify.app/',
       handleCodeInApp: true,
     }).then(() => {
       localStorage.setItem('email', email);

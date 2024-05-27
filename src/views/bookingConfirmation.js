@@ -15,11 +15,11 @@ const BookingConfirmation = () => {
   const [bookingDetails, setBookingDetails] = useState({});
   const location = useLocation();
 
-  useEffect(() => {
-    if (!user) {
-      history.push('/'); // Redirect to home page if user is not authenticated
-    }
-  }, [user, history]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     history.push('/'); // Redirect to home page if user is not authenticated
+  //   }
+  // }, [user, history]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -57,13 +57,16 @@ const BookingConfirmation = () => {
     );
   }
 
+  const handleRedirect = () => {
+    history.push('/')
+  }
+
   return (
     <div className="booking-confirmation">
       <h1>Booking Confirmed</h1>
-      <p className="greeting">Hello {bookingDetails.user},</p>
+      <p className="greeting">Dear User,</p>
       <p className="message">Your booking for {bookingDetails.type} has been successfully confirmed. Below are the details of your appointment:</p>
       <div className="booking-details">
-        <p><strong>User:</strong> {bookingDetails.user}</p>
         <p><strong>Type:</strong> {bookingDetails.type}</p>
         <p><strong>Email:</strong> {bookingDetails.email}</p>
         <p><strong>Event Type:</strong> {bookingDetails.eventTypeSlug}</p>
@@ -73,6 +76,12 @@ const BookingConfirmation = () => {
         <p><strong>End Time:</strong> {bookingDetails.endTime.toLocaleString()}</p>
         <p><strong>Location:</strong> {bookingDetails.location}</p>
       </div>
+      <div className='back-button'>
+        <button className="home-book button button-main back-button" onClick={handleRedirect}>
+          <span className="home-text07">{`<--Back to Home`}</span>
+        </button>
+      </div>
+
       <p className="thanks">Thank you for booking with us!</p>
       <p className="regards">Thanks & Regards,<br />Team DocBook</p>
     </div>

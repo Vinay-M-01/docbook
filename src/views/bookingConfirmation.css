@@ -32,7 +32,15 @@
   text-align: center;
   padding: 5px;
 }
+.home-text07 {
+  font-family: Inter;
+}
 
+.back-button {
+  display: flex;
+  justify-content: center; /* centers horizontally */
+  align-items: center; /* centers vertically */
+}
 /* HTML: <div class="loader"></div> */
 .loader {
   margin: auto;
