@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Payment.css';
 
-const Payment = ({ loading, setLoading, setIsPaymentPending }) => {
+const Payment = ({ loading, setLoading, setIsPaymentPending, setPaymentFailed }) => {
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -38,12 +38,19 @@ const Payment = ({ loading, setLoading, setIsPaymentPending }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      setLoading(true)
+      setLoading(true);
       setTimeout(() => {
-        setIsPaymentPending(false)
-        setLoading(false)
-      }, 5000)
+        setIsPaymentPending(false);
+        setLoading(false);
+      }, 5000);
     }
+  };
+
+  const handleDecline = (e) => {
+    console.log("failed")
+    e.preventDefault();
+    setIsPaymentPending(false)
+    setPaymentFailed(true);
   };
 
   return (
@@ -103,13 +110,17 @@ const Payment = ({ loading, setLoading, setIsPaymentPending }) => {
           <input
             type="number"
             id="amount"
-            value={1000}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
             required
           />
           {errors.amount && <span className="error">{errors.amount}</span>}
         </div>
-        <button type="submit" className="payment-button">Pay Now</button>
+        <div style={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
+          <button type="submit" className="payment-success">Accept</button>
+          <button className="payment-failure" onClick={handleDecline}>Decline</button>
+        </div>
       </form>
     </div>
   );

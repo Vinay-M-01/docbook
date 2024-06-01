@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "../../views/home.css";
 import LoginModal from '../LoginModal';
-import MyProfile from '../MyProfile';
+import MyProfilePopover from '../MyProfilePopover';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../FirebaseConfig';
 import useRemoveQueryParam from '../../hooks/useRemoveQueryParam'
@@ -11,11 +11,10 @@ import Modal from '../Modal.js'
 const HeroBanner = () => {
   // Firebase Authentication related code
   const [user, loading, error] = useAuthState(auth);
-
-
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showProfilePopover, setShowProfilePopover] = useState(false);
+  const profileButtonRef = useRef(null); // Reference to the profile button/image
   const removeAllQueryParams = useRemoveQueryParam();
 
   const openModal = () => {
@@ -42,15 +41,9 @@ const HeroBanner = () => {
     setShowLoginModal(false);
   };
 
-  const openProfileModal = () => {
-    setShowProfileModal(true);
+  const toggleProfilePopover = () => {
+    setShowProfilePopover(!showProfilePopover);
   };
-
-  const closeProfileModal = () => {
-    setShowProfileModal(false);
-  };
-
-
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -67,7 +60,6 @@ const HeroBanner = () => {
       cal("ui", { "styles": { "branding": { "brandColor": "#4E85FF" } }, "hideEventTypeDetails": false, "layout": "month_view" });
     })();
   }, [])
-
 
   return (
     <div className='home-container'>
@@ -110,11 +102,14 @@ const HeroBanner = () => {
                 <>
                   {user ? (
                     <>
-                      <div>
+                      <div ref={profileButtonRef}>
                         {
                           user.photoURL ?
-                            <img src={user.photoURL} alt="dp" referrerPolicy='no-referrer' style={{ borderRadius: "50%" }} width="50px" onClick={openProfileModal} /> :
-                            <button className="home-book button button-main" onClick={openProfileModal}>
+                            <img src={user.photoURL} alt="dp" referrerPolicy='no-referrer' style={{ borderRadius: "50%" }} width="50px" onClick={() => {
+                              toggleProfilePopover()
+                              console.log("popopo")
+                            }} /> :
+                            <button className="home-book button button-main" onClick={toggleProfilePopover}>
                               <span className="home-text07">My Profile</span>
                             </button>
                         }
@@ -151,7 +146,7 @@ const HeroBanner = () => {
                 />
                 <div data-thq="thq-close-menu" className="home-menu-close">
                   <svg viewBox="0 0 1024 1024" className="home-icon3">
-                    <path d="M810 274l-238 238 238 238-60 60-238-238-238 238-60-60 238-238-238-238 60-60 238 238 238-238z"></path>
+                    <path d="M810 274l-238 238 238 238-60 60-238-238-238 238-238-238-60-60 238-238-238-238 60-60 238 238 238-238z"></path>
                   </svg>
                 </div>
               </div>
@@ -179,8 +174,8 @@ const HeroBanner = () => {
                           <div>
                             {
                               user.photoURL ?
-                                <img src={user.photoURL} alt="dp" referrerPolicy='no-referrer' style={{ borderRadius: "50%" }} onClick={openProfileModal} /> :
-                                <button className="home-book button button-main" onClick={openProfileModal}>
+                                <img src={user.photoURL} alt="dp" referrerPolicy='no-referrer' style={{ borderRadius: "50%" }} onClick={toggleProfilePopover} /> :
+                                <button className="home-book button button-main" onClick={toggleProfilePopover}>
                                   <span className="home-text07">My Profile</span>
                                 </button>
                             }
@@ -216,15 +211,6 @@ const HeroBanner = () => {
                 Easily connect with trusted doctors across various specialties for all your health concerns. Experience seamless booking and exceptional care with DocBook.
               </p>
             </div>
-            {/* <button className="button button-main home-book2" data-cal-namespace=""
-              data-cal-link="vinay-melavanki-5d2yti/cardiology" data-cal-config='{"layout":"month_view"}' >
-              <img
-                alt="image"
-                src="/Icons/calendar.svg"
-                className="home-image10"
-              />
-              <span>Book Appointment Now!</span>
-            </button> */}
             <button className="button button-main home-book2" onClick={openModal} >
               <img
                 alt="image"
@@ -246,7 +232,14 @@ const HeroBanner = () => {
       <div style={{ width: "200px" }}>
         <LoginModal showLoginModal={showLoginModal} closeLoginModal={closeLoginModal} />
       </div>
-      <MyProfile showProfileModal={showProfileModal} closeProfileModal={closeProfileModal} />
+
+      <div>
+        {showProfilePopover && (
+          <div >
+            <MyProfilePopover closePopover={toggleProfilePopover} anchorRef={profileButtonRef} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

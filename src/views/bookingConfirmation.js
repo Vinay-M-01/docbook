@@ -11,15 +11,16 @@ const BookingConfirmation = () => {
 
   const [isPaymentPending, setIsPaymentPending] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [paymentFailed, setPaymentFailed] = useState(false);
 
   const [bookingDetails, setBookingDetails] = useState({});
   const location = useLocation();
 
   // useEffect(() => {
-  //   if (!user) {
+  //   if (!user && !isLoading) {
   //     history.push('/'); // Redirect to home page if user is not authenticated
   //   }
-  // }, [user, history]);
+  // }, [user, isLoading, history]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -37,6 +38,19 @@ const BookingConfirmation = () => {
     setBookingDetails(details);
   }, [location.search]);
 
+  const handleRedirect = () => {
+    history.push('/');
+  };
+
+  useEffect(() => {
+    if (paymentFailed) {
+      setTimeout(() => {
+        alert('Your payment towards booking confirmation failed, please try again later!');
+        history.push('/');
+      }, 1000);
+    }
+  }, [paymentFailed, history]);
+
   if (loading) {
     return (
       <div className='loading-container text-center'>
@@ -52,13 +66,36 @@ const BookingConfirmation = () => {
   if (isPaymentPending) {
     return (
       <div>
-        <Payment loading={loading} setLoading={setLoading} setIsPaymentPending={setIsPaymentPending} />
+        <Payment
+          loading={loading}
+          setLoading={setLoading}
+          setIsPaymentPending={setIsPaymentPending}
+          setPaymentFailed={setPaymentFailed}
+        />
       </div>
     );
   }
 
-  const handleRedirect = () => {
-    history.push('/')
+  if (paymentFailed) {
+    return (
+      <div className="payment-failed">
+        <h1>Payment Failed</h1>
+        <p className="greeting">Dear User,</p>
+        <p className="message">Your payment for the booking of {bookingDetails.type} has failed. Below are the details of your attempted booking:</p>
+        <div className="booking-details">
+          <p><strong>Type:</strong> {bookingDetails.type}</p>
+          <p><strong>Email:</strong> {bookingDetails.email}</p>
+          <p><strong>Event Type:</strong> {bookingDetails.eventTypeSlug}</p>
+          <p><strong>Title:</strong> {bookingDetails.title}</p>
+          <p><strong>Description:</strong> {bookingDetails.description}</p>
+          {/* <p><strong>Start Time:</strong> {bookingDetails.startTime.toLocaleString()}</p>
+          <p><strong>End Time:</strong> {bookingDetails.endTime.toLocaleString()}</p> */}
+          <p><strong>Location:</strong> {bookingDetails.location}</p>
+        </div>
+        <p className="thanks">Sorry for the inconvenience caused!</p>
+        <p className="regards">Thanks & Regards,<br />Team DocBook</p>
+      </div>
+    );
   }
 
   return (
@@ -81,7 +118,6 @@ const BookingConfirmation = () => {
           <span className="home-text07">{`<--Back to Home`}</span>
         </button>
       </div>
-
       <p className="thanks">Thank you for booking with us!</p>
       <p className="regards">Thanks & Regards,<br />Team DocBook</p>
     </div>

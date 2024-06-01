@@ -44,19 +44,37 @@
   outline: none;
 }
 
-.payment-button {
+.payment-success {
   padding: 15px;
-  background-color: #4f86fe;
-  color: #fff;
+  background-color: #14e31b;
+  color: #000000;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 5px;
+  width: 40%;
 }
 
-.payment-button:hover {
-  background-color: #3b6cc4;
+.payment-failure {
+  padding: 15px;
+  background-color: #f42b2b;
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 5px;
+  width: 40%;
+}
+
+.payment-success:hover {
+  background-color: #3bc452;
+}
+.payment-failure:hover {
+  background-color: #c43b40;
 }
 
 .error {
@@ -74,7 +92,7 @@
     font-size: 14px;
   }
 
-  .payment-button {
+  .payment-success {
     font-size: 14px;
   }
 }

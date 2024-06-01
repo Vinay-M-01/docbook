@@ -10,6 +10,19 @@
   text-align: center;
 }
 
+.payment-failed {
+  font-family: "Arial", sans-serif;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  text-align: center;
+  margin-top: 10%;
+}
+
 .booking-confirmation h1 {
   color: #2c3e50;
   margin-bottom: 20px;
@@ -32,6 +45,7 @@
   text-align: center;
   padding: 5px;
 }
+
 .home-text07 {
   font-family: Inter;
 }
@@ -98,6 +112,14 @@
   font-size: 1em;
   color: #95a5a6;
   margin-top: 30px;
+}
+
+.payment-failed h1 {
+  color: #e74c3c;
+}
+
+.payment-failed .thanks {
+  color: #e74c3c;
 }
 
 @media (max-width: 600px) {

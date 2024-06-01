@@ -18,7 +18,7 @@ const LoginModal = ({ showLoginModal, closeLoginModal }) => {
   useEffect(() => {
     if (user) {
       // user is signed in
-      console.log("User is present")
+      console.log("User is present", user)
     }
     else {
       // user is not signed in but the link is valid
